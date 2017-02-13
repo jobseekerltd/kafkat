@@ -55,6 +55,7 @@ RUN set -ex \
 		autoconf \
 		bison \
 		gcc \
+        git \
 		libbz2-dev \
 		libgdbm-dev \
 		libglib2.0-dev \
@@ -93,9 +94,6 @@ RUN set -ex \
 	&& ./configure --disable-install-doc --enable-shared \
 	&& make -j"$(nproc)" \
 	&& make install \
-    && gem install kafkat \
-	\
-	&& apt-get purge -y --auto-remove $buildDeps \
 	&& cd / \
 	&& rm -r /usr/src/ruby \
 	\
@@ -115,6 +113,14 @@ ENV BUNDLE_PATH="$GEM_HOME" \
 ENV PATH $BUNDLE_BIN:$PATH
 RUN mkdir -p "$GEM_HOME" "$BUNDLE_BIN" \
 	&& chmod 777 "$GEM_HOME" "$BUNDLE_BIN"
+
+ADD . /opt/kafkat
+
+WORKDIR /opt/kafkat
+
+RUN \
+    bundle install \
+	&& apt-get purge -y --auto-remove $buildDeps
 
 # Copy configs & entrypoint
 ADD kafkatcfg.j2 /etc/kafkatcfg.j2
