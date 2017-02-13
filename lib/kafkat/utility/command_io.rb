@@ -6,8 +6,6 @@ module Kafkat
       assignments.each { |a| print_assignment(a) }
       print "\n"
 
-      return unless agree("Proceed (y/n)?")
-
       result = nil
       begin
         print "\nBeginning.\n"

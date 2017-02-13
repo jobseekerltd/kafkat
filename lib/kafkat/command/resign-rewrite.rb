@@ -23,8 +23,6 @@ module Kafkat
         print "This operation rewrites leaderships in ZK to exclude broker '#{broker_id}'.\n"
         print "WARNING: This is a last resort. Try the 'shutdown' command first!\n\n".red
 
-        return unless agree("Proceed (y/n)?")
-
         brokers = zookeeper.get_brokers
         topics = zookeeper.get_topics
         force = opts[:force]

@@ -8,7 +8,6 @@ module Kafkat
 
       def run
         print "This operation will remove any untruncated index files.\n"
-        return unless ask("Proceed (y/n)?")
 
         begin
           print "\nStarted.\n"
