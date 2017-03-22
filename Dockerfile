@@ -4,7 +4,7 @@ FROM java:openjdk-8-jre
 ENV \
     DEBIAN_FRONTEND="noninteractive" \
     SCALA_VERSION="2.12" \
-    KAFKA_VERSION="0.10.0.2" \
+    KAFKA_VERSION="0.10.2.0" \
     KAFKA_HOME="/opt/kafka" \
     JMX_PORT="9091"
 
@@ -12,16 +12,13 @@ ENV \
 RUN \
     # Kafka and Python
     apt-get update \
-    && apt-get install -y wget dnsutils python-pip ruby \
+    && apt-get install -y wget dnsutils python-pip ruby jq \
     && apt-get clean \
-    && wget -q http://apache.mirrors.spacedump.net/kafka/"$KAFKA_VERSION"/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz -O /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz \
-    && mkdir -p /opt/kafka && cd /opt/kafka \
-    && tar -xvzf /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz --strip 1 \
-    && rm /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz \
-
     # envtpl
     && pip install envtpl
 
+ADD download-kafka.sh /tmp/download-kafka.sh
+RUN chmod a+x /tmp/download-kafka.sh && sync && /tmp/download-kafka.sh && tar xfz /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt && rm /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz && ln -s /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} /opt/kafka
 # Install Ruby for Kafkat
 RUN apt-get install -y --no-install-recommends \
         build-essential \
