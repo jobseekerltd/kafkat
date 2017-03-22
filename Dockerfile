@@ -3,8 +3,8 @@ FROM java:openjdk-8-jre
 # Set global vars
 ENV \
     DEBIAN_FRONTEND="noninteractive" \
-    SCALA_VERSION="2.11" \
-    KAFKA_VERSION="0.10.0.1" \
+    SCALA_VERSION="2.12" \
+    KAFKA_VERSION="0.10.0.2" \
     KAFKA_HOME="/opt/kafka" \
     JMX_PORT="9091"
 
